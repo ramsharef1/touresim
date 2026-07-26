@@ -1,0 +1,10 @@
+// Barrel for the full Touresim schema. Mirrors SEO-TOPICAL-BLUEPRINT.md §7.
+export * from './_shared'
+export * from './users'
+export * from './places'
+export * from './pois'
+export * from './taxonomy'
+export * from './content'
+export * from './media'
+export * from './monetization'
+export * from './sources'

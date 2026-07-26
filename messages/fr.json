@@ -1,0 +1,18 @@
+{
+  "meta": {
+    "siteName": "Touresim",
+    "description": "Votre guide complet pour voyager partout : destinations, sites et meilleures périodes pour visiter — un contenu durable pour chaque voyageur."
+  },
+  "home": {
+    "badge": "La bible du voyageur",
+    "title": "Votre guide complet pour voyager partout",
+    "subtitle": "Découvrez des destinations, des sites incontournables, les meilleures périodes pour visiter et des itinéraires prêts à l'emploi — des conseils fiables et durables pour chaque voyageur.",
+    "cta": "Explorer les destinations"
+  },
+  "nav": {
+    "home": "Accueil",
+    "destinations": "Destinations",
+    "thingsToDo": "À faire",
+    "guides": "Guides de voyage"
+  }
+}

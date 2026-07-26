@@ -1,0 +1,18 @@
+{
+  "meta": {
+    "siteName": "Touresim",
+    "description": "Her yere seyahat için eksiksiz rehberiniz: destinasyonlar, simge yapılar ve ziyaret için en iyi zamanlar — her gezgin için kalıcı içerik."
+  },
+  "home": {
+    "badge": "Gezginin başucu kitabı",
+    "title": "Her yere seyahat için eksiksiz rehberiniz",
+    "subtitle": "Destinasyonları, simge yapıları, ziyaret için en iyi zamanları ve hazır gezi planlarını keşfedin — her gezgin için güvenilir ve kalıcı rehberlik.",
+    "cta": "Destinasyonları keşfet"
+  },
+  "nav": {
+    "home": "Ana sayfa",
+    "destinations": "Destinasyonlar",
+    "thingsToDo": "Yapılacaklar",
+    "guides": "Seyahat rehberleri"
+  }
+}

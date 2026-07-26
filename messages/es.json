@@ -1,0 +1,18 @@
+{
+  "meta": {
+    "siteName": "Touresim",
+    "description": "Tu guía completa para viajar a cualquier lugar: destinos, monumentos y las mejores épocas para visitar — contenido perenne para cada viajero."
+  },
+  "home": {
+    "badge": "La biblia del viajero",
+    "title": "Tu guía completa para viajar a cualquier lugar",
+    "subtitle": "Descubre destinos, monumentos, las mejores épocas para visitar e itinerarios listos para usar — orientación fiable y perenne para cada viajero, vaya donde vaya.",
+    "cta": "Explorar destinos"
+  },
+  "nav": {
+    "home": "Inicio",
+    "destinations": "Destinos",
+    "thingsToDo": "Qué hacer",
+    "guides": "Guías de viaje"
+  }
+}
