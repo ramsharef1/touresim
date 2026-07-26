@@ -1,18 +1,768 @@
 {
   "meta": {
     "siteName": "Touresim",
-    "description": "Votre guide complet pour voyager partout : destinations, sites et meilleures périodes pour visiter — un contenu durable pour chaque voyageur."
+    "description": "Your complete guide to travel anywhere: destinations, landmarks, and the best times to visit — evergreen guidance for every traveler."
   },
   "home": {
-    "badge": "La bible du voyageur",
-    "title": "Votre guide complet pour voyager partout",
-    "subtitle": "Découvrez des destinations, des sites incontournables, les meilleures périodes pour visiter et des itinéraires prêts à l'emploi — des conseils fiables et durables pour chaque voyageur.",
-    "cta": "Explorer les destinations"
+    "badge": "The traveler's bible",
+    "title": "Your complete guide to travel anywhere",
+    "subtitle": "Discover destinations, landmarks, the best times to visit, and ready-made itineraries — trusted, evergreen guidance for every traveler, wherever they go.",
+    "cta": "Explore destinations"
   },
   "nav": {
-    "home": "Accueil",
+    "home": "Home",
     "destinations": "Destinations",
-    "thingsToDo": "À faire",
-    "guides": "Guides de voyage"
+    "thingsToDo": "Things to do",
+    "guides": "Travel guides",
+    "blog": "Blog",
+    "about": "About",
+    "contact": "Contact"
+  },
+  "travelGuides": {
+    "title": "Travel Guides & Tips",
+    "subtitle": "Expert advice to make your journey smoother and more enjoyable",
+    "meta": {
+      "title": "Travel Guides - Touresim",
+      "description": "Comprehensive travel guides covering packing, safety, budgeting, and more"
+    },
+    "guides": {
+      "packing-essentials": {
+        "title": "Packing Essentials",
+        "description": "Learn what to pack for any destination and climate"
+      },
+      "passport-tips": {
+        "title": "Passport & Visa Tips",
+        "description": "Everything you need to know about travel documents"
+      },
+      "budget-travel": {
+        "title": "Budget Travel",
+        "description": "Travel more by spending less with smart tips"
+      },
+      "travel-safety": {
+        "title": "Travel Safety",
+        "description": "Stay safe and secure during your travels"
+      },
+      "jet-lag-tips": {
+        "title": "Beating Jet Lag",
+        "description": "Recovery strategies for long-distance travel"
+      },
+      "travel-insurance": {
+        "title": "Travel Insurance",
+        "description": "Understand coverage options and what to look for"
+      }
+    },
+    "learnMore": "Learn More",
+    "cta": {
+      "title": "Need Personalized Advice?",
+      "subtitle": "Our travel experts are here to help",
+      "button": "Contact Us"
+    }
+  },
+  "faq": {
+    "title": "Frequently Asked Questions",
+    "subtitle": "Find answers to common travel questions",
+    "search": "Search questions...",
+    "meta": {
+      "title": "FAQ - Touresim",
+      "description": "Answers to frequently asked travel questions"
+    },
+    "questions": {
+      "visa-requirements": {
+        "q": "How do I check visa requirements for my passport?",
+        "a": "Use our visa checker tool to select your passport nationality and destination. We'll show you the requirements and processing times."
+      },
+      "passport-validity": {
+        "q": "How long should my passport be valid?",
+        "a": "Most countries require your passport to be valid for at least 6 months beyond your travel dates. Some countries require more."
+      },
+      "travel-budget": {
+        "q": "How much budget should I plan for?",
+        "a": "Budget varies by destination. We provide cost-of-living guides for each country to help you plan."
+      },
+      "best-time-to-visit": {
+        "q": "What's the best time to visit a destination?",
+        "a": "Each country has different peak and shoulder seasons. Check our destination pages for weather patterns and festival calendars."
+      },
+      "travel-insurance": {
+        "q": "Do I need travel insurance?",
+        "a": "Travel insurance is highly recommended to cover medical emergencies, trip cancellations, and lost luggage."
+      },
+      "vaccinations": {
+        "q": "What vaccinations do I need?",
+        "a": "Vaccination requirements vary by destination. Consult your doctor or CDC/WHO website for current requirements."
+      },
+      "currency-exchange": {
+        "q": "Where should I exchange currency?",
+        "a": "Exchange at your bank before traveling or use ATMs abroad. Avoid airport exchanges which often have poor rates."
+      },
+      "travel-apps": {
+        "q": "What apps do I need for travel?",
+        "a": "Essential apps include maps (Google Maps, offline), translation (Google Translate), and money management (Wise, OANDA)."
+      },
+      "luggage-restrictions": {
+        "q": "What are luggage restrictions on flights?",
+        "a": "Most airlines allow 1-2 carry-ons and 1-2 checked bags. Check your airline's specific policy."
+      },
+      "travel-documentation": {
+        "q": "What documents do I need to travel?",
+        "a": "Minimum: passport, visa (if required), travel insurance, and flight confirmations. Make copies and store digitally."
+      },
+      "hotel-booking": {
+        "q": "When should I book hotels?",
+        "a": "Book 2-3 months in advance for best rates. Consider booking directly with hotels for better cancellation policies."
+      },
+      "travel-insurance-claims": {
+        "q": "How do I file a travel insurance claim?",
+        "a": "Keep all receipts and documents. Contact your insurer promptly with evidence of the incident."
+      }
+    },
+    "stillHave": {
+      "title": "Still Have Questions?",
+      "subtitle": "Get in touch with our support team",
+      "button": "Send us a Message"
+    }
+  },
+  "about": {
+    "hero": {
+      "title": "About Touresim",
+      "subtitle": "Helping travelers explore the world with confidence"
+    },
+    "meta": {
+      "title": "About Touresim",
+      "description": "Learn about Touresim's mission and team"
+    },
+    "mission": {
+      "title": "Our Mission",
+      "description": "To empower travelers with reliable, comprehensive information about every destination on Earth. We believe travel should be accessible, safe, and enriching for everyone."
+    },
+    "stats": {
+      "countries": "Countries Covered",
+      "cities": "Cities Explored",
+      "travelers": "Travelers Helped",
+      "guides": "Travel Guides"
+    },
+    "values": {
+      "trust": {
+        "title": "Trust",
+        "description": "Accurate, verified information you can rely on"
+      },
+      "innovation": {
+        "title": "Innovation",
+        "description": "Cutting-edge tools for better travel planning"
+      },
+      "community": {
+        "title": "Community",
+        "description": "Connecting travelers and sharing experiences"
+      }
+    },
+    "team": {
+      "title": "Our Team",
+      "member-1": {
+        "name": "Founder & Visionary",
+        "role": "Founder",
+        "bio": "Passionate about making travel accessible to everyone"
+      },
+      "member-2": {
+        "name": "CEO & Business Lead",
+        "role": "CEO",
+        "bio": "Building the platform that powers travel planning"
+      },
+      "member-3": {
+        "name": "Content Director",
+        "role": "Content Lead",
+        "bio": "Curating the most useful travel information"
+      },
+      "member-4": {
+        "name": "Product Manager",
+        "role": "Product",
+        "bio": "Designing experiences that travelers love"
+      }
+    },
+    "cta": {
+      "title": "Ready to Explore?",
+      "subtitle": "Join millions of travelers planning their next adventure",
+      "button1": "Explore Destinations",
+      "button2": "Learn More"
+    }
+  },
+  "contact": {
+    "hero": {
+      "title": "Get in Touch",
+      "subtitle": "We'd love to hear from you"
+    },
+    "meta": {
+      "title": "Contact Touresim",
+      "description": "Contact us with questions or feedback"
+    },
+    "form": {
+      "title": "Send us a Message",
+      "name": "Full Name",
+      "namePlaceholder": "John Doe",
+      "email": "Email Address",
+      "emailPlaceholder": "john@example.com",
+      "subject": "Subject",
+      "selectSubject": "Select a subject",
+      "subject1": "General Inquiry",
+      "subject2": "Technical Support",
+      "subject3": "Partnership",
+      "message": "Message",
+      "messagePlaceholder": "Tell us how we can help...",
+      "submit": "Send Message"
+    },
+    "info": {
+      "title": "Contact Information",
+      "email": {
+        "label": "Email",
+        "value": "hello@touresim.com"
+      },
+      "phone": {
+        "label": "Phone",
+        "value": "+1 (555) 123-4567"
+      },
+      "address": {
+        "label": "Address",
+        "value": "123 Travel Lane, Adventure City, AC 12345"
+      },
+      "hours": {
+        "label": "Business Hours",
+        "value": "Monday - Friday, 9 AM - 6 PM UTC"
+      }
+    },
+    "social": {
+      "title": "Follow Us"
+    }
+  },
+  "blog": {
+    "title": "Travel Blog",
+    "subtitle": "Stories, tips, and inspiration from the road",
+    "meta": {
+      "title": "Blog - Touresim",
+      "description": "Travel stories and expert tips from Touresim"
+    },
+    "category": {
+      "destinations": "Destinations",
+      "tips": "Tips",
+      "stories": "Stories",
+      "news": "News"
+    },
+    "featured": {
+      "title": "The Ultimate Guide to Hidden Gems Around the World",
+      "description": "Discover lesser-known destinations that offer authentic experiences without the crowds.",
+      "date": "July 15, 2024",
+      "readTime": "12"
+    },
+    "readMore": "Read More",
+    "trending": {
+      "title": "Trending Now",
+      "item1": "5 Budget-Friendly European Cities",
+      "item2": "How to Travel Solo Safely",
+      "item3": "Best Time to Visit Asia"
+    },
+    "allArticles": "All Articles",
+    "articles": {
+      "article-1": {
+        "title": "5 Budget-Friendly European Cities",
+        "excerpt": "Explore Europe without breaking the bank with these affordable alternatives to Paris and Rome."
+      },
+      "article-2": {
+        "title": "How to Travel Solo Safely",
+        "excerpt": "Essential tips for solo travelers to stay safe while exploring the world independently."
+      },
+      "article-3": {
+        "title": "Best Time to Visit Asia",
+        "excerpt": "A seasonal guide to visiting different Asian countries for optimal weather and experiences."
+      },
+      "article-4": {
+        "title": "Street Food Around the World",
+        "excerpt": "Discover authentic local cuisine through street food in different destinations."
+      },
+      "article-5": {
+        "title": "Digital Nomad Guide",
+        "excerpt": "Everything you need to know about working and traveling remotely around the world."
+      },
+      "article-6": {
+        "title": "Travel Photography Tips",
+        "excerpt": "Capture stunning travel memories with these professional photography techniques."
+      },
+      "article-7": {
+        "title": "Luxury Travel on a Budget",
+        "excerpt": "Experience luxury travel without expensive hotels and fine dining."
+      },
+      "article-8": {
+        "title": "Family Travel Hacks",
+        "excerpt": "Make traveling with kids easier with these proven family travel strategies."
+      },
+      "article-9": {
+        "title": "Adventure Activities by Region",
+        "excerpt": "From hiking to diving, find the best adventure sports at each destination."
+      },
+      "article-10": {
+        "title": "Travel During Off-Season",
+        "excerpt": "Benefits of traveling during shoulder season and how to avoid crowds."
+      },
+      "article-11": {
+        "title": "Visa Requirements Explained",
+        "excerpt": "Understanding different visa types and requirements for international travel."
+      },
+      "article-12": {
+        "title": "Travel Insurance Claims",
+        "excerpt": "How to file and win travel insurance claims successfully."
+      }
+    },
+    "newsletter": {
+      "title": "Subscribe to Our Newsletter",
+      "subtitle": "Get weekly travel tips and destination inspiration delivered to your inbox",
+      "placeholder": "Enter your email",
+      "button": "Subscribe"
+    }
+  },
+  "accommodationGuide": {
+    "title": "Accommodation Guide",
+    "subtitle": "Find the perfect place to stay for every trip",
+    "meta": {
+      "title": "Accommodation Guide - Touresim",
+      "description": "Guide to different types of accommodations and how to choose the best for your trip"
+    },
+    "types": {
+      "title": "Types of Accommodations",
+      "hotels": {
+        "name": "Hotels",
+        "description": "Traditional hospitality with amenities and housekeeping services"
+      },
+      "hostels": {
+        "name": "Hostels",
+        "description": "Budget-friendly option with shared spaces perfect for meeting other travelers"
+      },
+      "airbnb": {
+        "name": "Apartments & Vacation Rentals",
+        "description": "Like a local with full kitchens and home comforts"
+      },
+      "resorts": {
+        "name": "Resorts",
+        "description": "All-inclusive destinations with activities and entertainment"
+      },
+      "guesthouses": {
+        "name": "Guesthouses",
+        "description": "Personal touch with local hospitality and home-cooked meals"
+      },
+      "camping": {
+        "name": "Camping & Glamping",
+        "description": "Experience nature while maintaining comfort and safety"
+      }
+    },
+    "learnMore": "Learn More",
+    "comparison": {
+      "title": "Quick Comparison",
+      "price": "Price Range",
+      "comfort": "Comfort Level",
+      "social": "Social Atmosphere",
+      "hotels": {
+        "price": "$50-250+",
+        "comfort": "Very High",
+        "social": "Limited"
+      },
+      "hostels": {
+        "price": "$10-40",
+        "comfort": "Medium",
+        "social": "Very High"
+      },
+      "airbnb": {
+        "price": "$40-200",
+        "comfort": "High",
+        "social": "Varies"
+      },
+      "resorts": {
+        "price": "$100-500+",
+        "comfort": "Very High",
+        "social": "High"
+      },
+      "guesthouses": {
+        "price": "$20-80",
+        "comfort": "Medium-High",
+        "social": "High"
+      },
+      "camping": {
+        "price": "$10-100",
+        "comfort": "Low-Medium",
+        "social": "High"
+      }
+    },
+    "tips": {
+      "title": "Booking Tips",
+      "tip1": {
+        "title": "Book in Advance",
+        "description": "Reserve 2-3 months ahead for better rates and availability"
+      },
+      "tip2": {
+        "title": "Check Reviews",
+        "description": "Read recent reviews from other travelers to avoid surprises"
+      },
+      "tip3": {
+        "title": "Compare Prices",
+        "description": "Check multiple booking sites for the best rates"
+      },
+      "tip4": {
+        "title": "Understand Cancellation",
+        "description": "Know the cancellation policy before booking"
+      },
+      "tip5": {
+        "title": "Location Matters",
+        "description": "Consider proximity to attractions and public transportation"
+      }
+    },
+    "cta": {
+      "title": "Ready to Find Your Perfect Stay?",
+      "subtitle": "Compare and book accommodations across all major platforms",
+      "button": "Start Booking"
+    }
+  },
+  "foodGuide": {
+    "title": "Food & Cuisine Guide",
+    "subtitle": "Discover the culinary world through travel",
+    "meta": {
+      "title": "Food Guide - Touresim",
+      "description": "Guide to cuisines and dining experiences around the world"
+    },
+    "cuisines": {
+      "title": "World Cuisines",
+      "asian": {
+        "name": "Asian Cuisine",
+        "description": "Explore diverse flavors from across Asia"
+      },
+      "european": {
+        "name": "European Cuisine",
+        "description": "Classic dishes and regional specialties"
+      },
+      "middle-eastern": {
+        "name": "Middle Eastern",
+        "description": "Rich spices and ancient culinary traditions"
+      },
+      "african": {
+        "name": "African Cuisine",
+        "description": "Bold flavors and authentic regional recipes"
+      },
+      "american": {
+        "name": "American Cuisine",
+        "description": "From North to South American treats"
+      },
+      "oceanian": {
+        "name": "Oceanian Cuisine",
+        "description": "Fresh seafood and tropical ingredients"
+      }
+    },
+    "explore": "Explore",
+    "tips": {
+      "title": "Dining Tips & Etiquette",
+      "tip1": {
+        "title": "Master the Cutlery",
+        "description": "Learn which fork to use first in formal dining"
+      },
+      "tip2": {
+        "title": "Wine Pairing",
+        "description": "Understanding wine pairings with different dishes"
+      },
+      "tip3": {
+        "title": "Language Tips",
+        "description": "Common food phrases in different languages"
+      },
+      "tip4": {
+        "title": "Tipping Customs",
+        "description": "Understand tipping expectations by country"
+      },
+      "tip5": {
+        "title": "Street Food Safety",
+        "description": "How to safely enjoy street food in any country"
+      },
+      "tip6": {
+        "title": "Dietary Communication",
+        "description": "How to communicate dietary restrictions abroad"
+      }
+    },
+    "dietary": {
+      "title": "Dietary Accommodations",
+      "vegetarian": {
+        "title": "Vegetarian Options",
+        "description": "Meat-free dining in different countries and cuisines"
+      },
+      "vegan": {
+        "title": "Vegan Friendly",
+        "description": "Plant-based food options around the world"
+      },
+      "halal": {
+        "title": "Halal Dining",
+        "description": "Halal-certified restaurants and food options"
+      },
+      "kosher": {
+        "title": "Kosher Options",
+        "description": "Kosher restaurants and food shops"
+      },
+      "gluten-free": {
+        "title": "Gluten-Free",
+        "description": "Navigating gluten-free travel and dining"
+      },
+      "allergen-free": {
+        "title": "Allergen-Free",
+        "description": "Managing food allergies while traveling"
+      }
+    },
+    "learnMore": "Learn More",
+    "etiquette": {
+      "title": "Restaurant Etiquette Around the World",
+      "rule1": {
+        "title": "Asia: Chopsticks & Respect",
+        "description": "Never stick chopsticks upright in rice, and slurp noodles as a compliment"
+      },
+      "rule2": {
+        "title": "Europe: Pace & Conversation",
+        "description": "Meals are leisurely social events; finishing quickly is considered rude"
+      },
+      "rule3": {
+        "title": "Middle East: Hand & Hospitality",
+        "description": "Eat with your right hand and always accept offered hospitality"
+      },
+      "rule4": {
+        "title": "Americas: Plate Cleaning",
+        "description": "It's complimentary to leave a clean plate, showing you enjoyed the meal"
+      }
+    }
+  },
+  "safetyGuide": {
+    "title": "Travel Safety Guide",
+    "subtitle": "Travel smart and stay safe around the world",
+    "meta": {
+      "title": "Safety Guide - Touresim",
+      "description": "Comprehensive travel safety guide and tips"
+    },
+    "topics": {
+      "personal-security": {
+        "title": "Personal Security",
+        "description": "Protect yourself and your belongings while traveling"
+      },
+      "health-safety": {
+        "title": "Health & Wellness",
+        "description": "Medical preparation and health tips for travelers"
+      },
+      "money-safety": {
+        "title": "Money Safety",
+        "description": "Secure your finances and prevent theft"
+      },
+      "transport-safety": {
+        "title": "Transportation Safety",
+        "description": "Safe travel by air, train, bus, and taxi"
+      },
+      "natural-disasters": {
+        "title": "Natural Disaster Prep",
+        "description": "Prepare for and respond to natural disasters"
+      },
+      "emergency-contacts": {
+        "title": "Emergency Contacts",
+        "description": "Important numbers and embassy information"
+      }
+    },
+    "readMore": "Read More",
+    "checklist": {
+      "title": "Travel Safety Checklist",
+      "item1": "Purchase comprehensive travel insurance",
+      "item2": "Make copies of important documents",
+      "item3": "Register with your embassy",
+      "item4": "Share your itinerary with someone",
+      "item5": "Backup your photos and data",
+      "item6": "Notify your bank of travel dates",
+      "item7": "Check travel alerts for your destination",
+      "item8": "Set up emergency contacts in your phone"
+    },
+    "riskLevels": {
+      "title": "Safety Risk Levels by Country",
+      "low": {
+        "title": "Low Risk - Safest Travel"
+      },
+      "moderate": {
+        "title": "Moderate Risk - Exercise Caution"
+      },
+      "high": {
+        "title": "High Risk - Avoid Non-Essential Travel"
+      },
+      "very-high": {
+        "title": "Very High Risk - Do Not Travel"
+      }
+    },
+    "emergency": {
+      "title": "Emergency Resources",
+      "help": "Need Immediate Help?",
+      "helpText": "Contact local authorities or your embassy immediately",
+      "embassy": "Find Your Embassy",
+      "embassyText": "Locate your country's embassy or consulate"
+    }
+  },
+  "inspiration": {
+    "title": "Travel Inspiration Gallery",
+    "subtitle": "Find your next adventure through stunning visuals",
+    "meta": {
+      "title": "Inspiration - Touresim",
+      "description": "Photo gallery and inspiration for your next trip"
+    },
+    "categories": {
+      "beach": "Beach Destinations",
+      "mountain": "Mountain Escapes",
+      "city": "City Exploration",
+      "adventure": "Adventure Sports",
+      "culture": "Cultural Heritage",
+      "nature": "Natural Wonders",
+      "food": "Culinary Tours",
+      "luxury": "Luxury Resorts"
+    },
+    "gallery": {
+      "title": "Destination Gallery"
+    },
+    "destinations": {
+      "destination1": "Bali, Indonesia",
+      "destination2": "Swiss Alps",
+      "destination3": "Tokyo, Japan",
+      "destination4": "Patagonia, Argentina",
+      "destination5": "The Colosseum, Rome",
+      "destination6": "Amazon Rainforest",
+      "destination7": "Bangkok, Thailand",
+      "destination8": "Santorini, Greece",
+      "destination9": "Iceland Waterfalls",
+      "destination10": "Machu Picchu, Peru",
+      "destination11": "Maldives",
+      "destination12": "Paris, France"
+    },
+    "trending": {
+      "title": "Trending Destinations",
+      "tags": ["Beach", "Mountain", "Adventure", "Culture"],
+      "destination1": {
+        "title": "Hidden Beach Paradise",
+        "description": "Discover secluded islands with crystal clear waters and pristine sands"
+      },
+      "destination2": {
+        "title": "Mountain Adventure",
+        "description": "Challenge yourself with world-class hiking and climbing experiences"
+      },
+      "destination3": {
+        "title": "Cultural Immersion",
+        "description": "Experience authentic traditions and local customs"
+      },
+      "destination4": {
+        "title": "Sustainable Travel",
+        "description": "Eco-friendly destinations focused on conservation"
+      }
+    },
+    "discover": "Discover More",
+    "newsletter": {
+      "title": "Get Inspired Weekly",
+      "subtitle": "Receive travel inspiration and tips delivered to your inbox",
+      "placeholder": "Enter your email",
+      "button": "Subscribe"
+    }
+  },
+  "events": {
+    "title": "Global Events & Festivals",
+    "subtitle": "Plan your travels around world-class festivals and events",
+    "meta": {
+      "title": "Events - Touresim",
+      "description": "Calendar of festivals and events around the world"
+    },
+    "calendar": {
+      "title": "Annual Calendar"
+    },
+    "types": {
+      "winter": "Winter Festivals",
+      "festival": "Cultural Festivals",
+      "seasonal": "Seasonal Events",
+      "cultural": "Cultural Events"
+    },
+    "upcoming": {
+      "title": "Upcoming Events"
+    },
+    "events": {
+      "event1": {
+        "title": "Winter Festival",
+        "description": "Experience the magic of winter celebrations",
+        "location": "Multiple locations",
+        "date": "Dec-Feb"
+      },
+      "event2": {
+        "title": "Carnival Celebration",
+        "description": "Join millions in the world's most colorful celebration",
+        "location": "Rio de Janeiro, Brazil",
+        "date": "Feb-Mar"
+      },
+      "event3": {
+        "title": "Cherry Blossom Festival",
+        "description": "Witness the beauty of blooming cherry trees",
+        "location": "Japan",
+        "date": "Mar-Apr"
+      },
+      "event4": {
+        "title": "Summer Music Festival",
+        "description": "Top artists perform in unique outdoor venues",
+        "location": "Various locations",
+        "date": "Jun-Aug"
+      },
+      "event5": {
+        "title": "Oktoberfest",
+        "description": "World's largest beer festival",
+        "location": "Munich, Germany",
+        "date": "Sep-Oct"
+      },
+      "event6": {
+        "title": "Holi Festival of Colors",
+        "description": "Celebrate spring with vibrant colored powder",
+        "location": "India",
+        "date": "Mar"
+      },
+      "event7": {
+        "title": "La Tomatina Festival",
+        "description": "World's largest food fight with tomatoes",
+        "location": "Valencia, Spain",
+        "date": "Aug"
+      },
+      "event8": {
+        "title": "New Year Celebrations",
+        "description": "Ring in the new year around the globe",
+        "location": "Worldwide",
+        "date": "Dec-Jan"
+      }
+    },
+    "learnMore": "Learn More",
+    "festivals": {
+      "cultural": {
+        "title": "Cultural Festivals",
+        "description": "Celebrations rooted in local traditions and customs",
+        "examples": "Diwali (India), Chinese New Year (China), Día de Muertos (Mexico)"
+      },
+      "seasonal": {
+        "title": "Seasonal Festivals",
+        "description": "Celebrations tied to seasons and harvests",
+        "examples": "Cherry Blossom (Japan), Oktoberfest (Germany), Harvest Festivals"
+      },
+      "religious": {
+        "title": "Religious Festivals",
+        "description": "Celebrations of faith and spiritual significance",
+        "examples": "Ramadan (Islamic), Easter (Christian), Hanukkah (Jewish)"
+      },
+      "food": {
+        "title": "Food Festivals",
+        "description": "Celebrations centered around cuisine",
+        "examples": "Truffle Festival (Italy), Wine Harvest (France), Seafood Festivals"
+      },
+      "music": {
+        "title": "Music Festivals",
+        "description": "Live performances and musical celebrations",
+        "examples": "Coachella (USA), Glastonbury (UK), Rio Carnival (Brazil)"
+      },
+      "art": {
+        "title": "Art Festivals",
+        "description": "Celebrations of visual and performing arts",
+        "examples": "Venice Biennale (Italy), Art Basel (Switzerland), Rio Carnival Floats"
+      }
+    },
+    "subscribe": {
+      "title": "Never Miss an Event",
+      "subtitle": "Get notified about festivals and events in your destination",
+      "placeholder": "Enter your email",
+      "button": "Notify Me"
+    }
   }
 }
