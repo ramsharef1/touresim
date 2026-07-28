@@ -1,7 +1,6 @@
 import { db } from '@/db'
 import { deals } from '@/db/schema'
-import { lte, desc, eq } from 'drizzle-orm'
-import { getTranslations } from 'next-intl'
+import { gte, desc, eq } from 'drizzle-orm'
 import { DealCard } from '@/components/DealCard'
 
 export const revalidate = 3600 // Revalidate every hour
@@ -24,11 +23,13 @@ export default async function DealsPage({
 }: {
   searchParams: { type?: string; destination?: string }
 }) {
-  const t = getTranslations()
-
   try {
-    // Fetch active deals
-    let query = db.select().from(deals).where(lte(deals.expiresAt, new Date()))
+    // Fetch active deals (not expired)
+    const now = new Date()
+    let query = db
+      .select()
+      .from(deals)
+      .where(gte(deals.expiresAt, now))
 
     // Filter by type
     if (searchParams.type) {

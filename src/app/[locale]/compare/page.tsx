@@ -1,7 +1,6 @@
 import { db } from '@/db'
 import { countries, cities } from '@/db/schema'
 import { ComparisonSearch } from '@/components/ComparisonSearch'
-import { getTranslations } from 'next-intl'
 
 export const metadata = {
   title: 'Compare Destinations',
@@ -9,7 +8,6 @@ export const metadata = {
 }
 
 export default async function ComparePage() {
-  const t = getTranslations()
 
   // Fetch all countries and cities for search
   const [allCountries, allCities] = await Promise.all([

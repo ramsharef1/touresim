@@ -24,7 +24,8 @@ export async function GET(request: NextRequest) {
     let query = db.select().from(deals)
 
     // Only active deals (not expired)
-    query = query.where(lte(deals.expiresAt, new Date()))
+    const now = new Date()
+    query = query.where(lte(now, deals.expiresAt))
 
     // Filter by type if provided
     if (type && DEAL_TYPES.includes(type as any)) {

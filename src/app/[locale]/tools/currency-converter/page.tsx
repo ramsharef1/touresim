@@ -1,5 +1,4 @@
 import { CurrencyConverter } from '@/components/CurrencyConverter'
-import { getTranslations } from 'next-intl'
 
 export const metadata = {
   title: 'Currency Converter',
@@ -7,7 +6,6 @@ export const metadata = {
 }
 
 export default async function CurrencyConverterPage() {
-  const t = getTranslations()
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
