@@ -1,155 +1,81 @@
-import { db } from '@/db'
-import { deals } from '@/db/schema'
-import { gte, desc, eq } from 'drizzle-orm'
-import { DealCard } from '@/components/DealCard'
-
-export const revalidate = 3600 // Revalidate every hour
-
 export const metadata = {
   title: 'Travel Deals',
   description: 'Best travel deals from top partners including flights, hotels, tours, and activities',
 }
 
-const DEAL_TYPES = [
-  { id: 'flight', label: 'Flights' },
-  { id: 'hotel', label: 'Hotels' },
-  { id: 'tour', label: 'Tours' },
-  { id: 'activity', label: 'Activities' },
-  { id: 'experience', label: 'Experiences' },
-] as const
-
-export default async function DealsPage({
-  searchParams,
-}: {
-  searchParams: { type?: string; destination?: string }
-}) {
-  try {
-    // Fetch active deals (not expired)
-    const now = new Date()
-    let query = db
-      .select()
-      .from(deals)
-      .where(gte(deals.expiresAt, now))
-
-    // Filter by type
-    if (searchParams.type) {
-      query = query.where(eq(deals.type, searchParams.type as any))
-    }
-
-    // Filter by destination
-    if (searchParams.destination) {
-      query = query.where(eq(deals.destinationSlug, searchParams.destination))
-    }
-
-    // Sort by discount (highest first), then by newest
-    const allDeals = await query.orderBy(desc(deals.discount), desc(deals.createdAt)).limit(100)
-
-    const dealCount = allDeals.length
-    const avgDiscount = dealCount > 0 ? Math.round(allDeals.reduce((sum, d) => sum + (d.discount || 0), 0) / dealCount) : 0
-
-    return (
-      <main className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
-        {/* Hero */}
-        <div className="bg-gradient-to-r from-blue-600 to-blue-700 text-white py-12">
-          <div className="mx-auto max-w-6xl px-4">
-            <h1 className="text-4xl font-bold mb-2">Travel Deals</h1>
-            <p className="text-lg text-blue-100">
-              Save up to {avgDiscount}% on flights, hotels, tours, and activities
-            </p>
-          </div>
-        </div>
-
-        {/* Content */}
-        <div className="mx-auto max-w-6xl px-4 py-12">
-          {/* Filter Tabs */}
-          <div className="mb-8 flex gap-2 overflow-x-auto pb-2">
-            <a
-              href="/deals"
-              className={`whitespace-nowrap px-4 py-2.5 rounded-full font-medium transition-all ${
-                !searchParams.type
-                  ? 'bg-blue-600 text-white shadow-md'
-                  : 'bg-white text-gray-700 hover:bg-gray-100'
-              }`}
-            >
-              All Deals {dealCount > 0 && `(${dealCount})`}
-            </a>
-
-            {DEAL_TYPES.map((type) => {
-              const filteredCount = allDeals.filter((d) => d.type === type.id).length
-              return (
-                <a
-                  key={type.id}
-                  href={`/deals?type=${type.id}`}
-                  className={`whitespace-nowrap px-4 py-2.5 rounded-full font-medium transition-all ${
-                    searchParams.type === type.id
-                      ? 'bg-blue-600 text-white shadow-md'
-                      : 'bg-white text-gray-700 hover:bg-gray-100'
-                  }`}
-                >
-                  {type.label} {filteredCount > 0 && `(${filteredCount})`}
-                </a>
-              )
-            })}
-          </div>
-
-          {/* Deals Grid */}
-          {dealCount === 0 ? (
-            <div className="bg-white rounded-lg shadow-sm p-12 text-center">
-              <p className="text-lg text-gray-600 mb-4">No deals available right now</p>
-              <p className="text-sm text-gray-500">Check back soon for amazing travel offers!</p>
-            </div>
-          ) : (
-            <>
-              <div className="mb-4 text-sm text-gray-600">
-                Showing {dealCount} active deal{dealCount !== 1 ? 's' : ''}
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {allDeals.map((deal) => (
-                  <DealCard key={deal.id} {...deal} />
-                ))}
-              </div>
-            </>
-          )}
-
-          {/* Info Section */}
-          <div className="mt-16 bg-white rounded-lg shadow-sm p-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">How We Find Deals</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <div>
-                <h3 className="font-semibold text-gray-900 mb-2">Curated Partners</h3>
-                <p className="text-gray-600 text-sm">
-                  We partner with leading travel companies like Booking.com, GetYourGuide, and Skyscanner to bring you the best deals.
-                </p>
-              </div>
-              <div>
-                <h3 className="font-semibold text-gray-900 mb-2">Real-Time Updates</h3>
-                <p className="text-gray-600 text-sm">
-                  Our deals are updated multiple times daily, so you never miss out on limited-time offers.
-                </p>
-              </div>
-              <div>
-                <h3 className="font-semibold text-gray-900 mb-2">Verified Savings</h3>
-                <p className="text-gray-600 text-sm">
-                  All prices are verified and up-to-date. We show you real savings compared to regular prices.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </main>
-    )
-  } catch (error) {
-    console.error('[/deals] Error:', error)
-    return (
-      <main className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 py-12">
+export default function DealsPage() {
+  return (
+    <main className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
+      {/* Hero */}
+      <div className="bg-gradient-to-r from-blue-600 to-blue-700 text-white py-12">
         <div className="mx-auto max-w-6xl px-4">
-          <div className="bg-white rounded-lg shadow-sm p-12 text-center">
-            <p className="text-lg text-red-600 mb-2">Something went wrong</p>
-            <p className="text-sm text-gray-600">We couldn't load the deals. Please try again later.</p>
-          </div>
+          <h1 className="text-4xl font-bold mb-2">Travel Deals</h1>
+          <p className="text-lg text-blue-100">Best travel deals updated daily</p>
         </div>
-      </main>
-    )
-  }
+      </div>
+
+      {/* Type Filters */}
+      <div className="mx-auto max-w-6xl px-4 py-12">
+        <div className="flex gap-2 mb-8 overflow-x-auto pb-2">
+          <a href="/deals" className="whitespace-nowrap px-4 py-2 rounded-full font-medium bg-blue-600 text-white shadow-md">All</a>
+          <a href="/deals?type=flight" className="whitespace-nowrap px-4 py-2 rounded-full font-medium bg-white text-gray-700 hover:bg-gray-100">Flights</a>
+          <a href="/deals?type=hotel" className="whitespace-nowrap px-4 py-2 rounded-full font-medium bg-white text-gray-700 hover:bg-gray-100">Hotels</a>
+          <a href="/deals?type=tour" className="whitespace-nowrap px-4 py-2 rounded-full font-medium bg-white text-gray-700 hover:bg-gray-100">Tours</a>
+          <a href="/deals?type=activity" className="whitespace-nowrap px-4 py-2 rounded-full font-medium bg-white text-gray-700 hover:bg-gray-100">Activities</a>
+          <a href="/deals?type=experience" className="whitespace-nowrap px-4 py-2 rounded-full font-medium bg-white text-gray-700 hover:bg-gray-100">Experiences</a>
+        </div>
+
+        {/* Deals Container (Client-side loading) */}
+        <div id="deals-container" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="col-span-full text-center py-12 text-gray-600">Loading deals...</div>
+        </div>
+      </div>
+
+      {/* Client Script to Load Deals */}
+      <script dangerouslySetInnerHTML={{__html: `
+        (async () => {
+          try {
+            const params = new URLSearchParams(window.location.search);
+            const type = params.get('type');
+            const url = '/api/deals' + (type ? '?type=' + type : '');
+
+            const res = await fetch(url);
+            const data = await res.json();
+
+            const container = document.getElementById('deals-container');
+            if (!data.data || data.data.length === 0) {
+              container.innerHTML = '<div class="col-span-full text-center py-12 text-gray-500">No deals available</div>';
+              return;
+            }
+
+            container.innerHTML = data.data.map(deal => \`
+              <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+                <div class="bg-gradient-to-r from-blue-500 to-blue-600 p-4 text-white">
+                  <h3 class="font-semibold text-lg">\${deal.title}</h3>
+                  <p class="text-sm text-blue-100">\${deal.partner}</p>
+                </div>
+                <div class="p-4">
+                  <p class="text-gray-600 text-sm mb-2">\${deal.description}</p>
+                  <div class="flex justify-between items-center mb-4">
+                    <div>
+                      <span class="text-2xl font-bold text-blue-600">$\${deal.dealPrice}</span>
+                      <span class="text-gray-500 line-through text-sm ml-2">$\${deal.originalPrice}</span>
+                    </div>
+                    <span class="bg-red-100 text-red-700 px-3 py-1 rounded-full text-sm font-semibold">-\${deal.discount}%</span>
+                  </div>
+                  <p class="text-xs text-gray-500 mb-3">Expires: \${new Date(deal.expiresAt).toLocaleDateString()}</p>
+                  <a href="\${deal.affiliateUrl}" target="_blank" rel="noopener noreferrer" class="block w-full bg-blue-600 text-white py-2 rounded-lg text-center font-medium hover:bg-blue-700">
+                    View Deal
+                  </a>
+                </div>
+              </div>
+            \`).join('');
+          } catch (error) {
+            console.error('Error loading deals:', error);
+            document.getElementById('deals-container').innerHTML = '<div class="col-span-full text-center py-12 text-red-600">Error loading deals</div>';
+          }
+        })();
+      `}} />
+    </main>
+  )
 }
