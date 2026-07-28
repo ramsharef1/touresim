@@ -114,10 +114,10 @@ export async function GET(request: NextRequest) {
     }
 
     if (whereConditions.length > 0) {
-      query = query.where(and(...whereConditions))
+      query = query.where(and(...whereConditions)) as any
     }
 
-    const results = await query.orderBy(desc(destinationReviews.createdAt))
+    const results = await (query as any).orderBy(desc(destinationReviews.createdAt))
 
     // Calculate average rating
     const avgRating = results.length > 0
