@@ -20,8 +20,10 @@ export async function SiteHeader({ locale, nationality }: { locale: string; nati
 
   const navLinks = [
     { href: '/destinations', label: t('destinations') },
-    { href: '/destinations', label: t('thingsToDo') },
-    { href: '/destinations', label: t('guides') },
+    { href: '/map', label: 'Map' },
+    { href: '/trip-planner', label: 'Trip Planner' },
+    { href: '/deals', label: 'Deals' },
+    { href: '/profile', label: 'Profile' },
   ]
 
   const localeLinks = LOCALES.map((l) => ({
@@ -56,6 +58,10 @@ export async function SiteHeader({ locale, nationality }: { locale: string; nati
           {/* Desktop nav */}
           <nav className="hidden items-center gap-1 lg:flex">
             <NavLink href="/destinations">{t('destinations')}</NavLink>
+            <NavLink href="/map">Map</NavLink>
+            <NavLink href="/trip-planner">Trip Planner</NavLink>
+            <NavLink href="/deals">Deals</NavLink>
+            <NavLink href="/profile">Profile</NavLink>
           </nav>
 
           {/* Nationality pill */}
