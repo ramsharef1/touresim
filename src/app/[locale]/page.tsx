@@ -7,6 +7,22 @@ import type { Locale } from '@/lib/locales'
 // Featured destination slugs — shown on homepage
 const FEATURED_SLUGS = ['japan', 'united-arab-emirates', 'france', 'turkey', 'italy', 'spain', 'greece', 'morocco']
 
+// Trending by month (1-indexed) — swaps each month for freshness
+const TRENDING_BY_MONTH: Record<number, string[]> = {
+  1:  ['japan', 'new-zealand', 'switzerland', 'peru'],
+  2:  ['thailand', 'morocco', 'spain', 'egypt'],
+  3:  ['italy', 'vietnam', 'india', 'portugal'],
+  4:  ['france', 'croatia', 'georgia', 'south-africa'],
+  5:  ['greece', 'turkey', 'cambodia', 'ireland'],
+  6:  ['indonesia', 'canada', 'iceland', 'austria'],
+  7:  ['united-states', 'norway', 'finland', 'czech-republic'],
+  8:  ['maldives', 'united-arab-emirates', 'kenya', 'albania'],
+  9:  ['italy', 'spain', 'mexico', 'peru'],
+  10: ['japan', 'south-korea', 'nepal', 'turkey'],
+  11: ['thailand', 'morocco', 'jordan', 'brazil'],
+  12: ['finland', 'austria', 'new-zealand', 'tanzania'],
+}
+
 export default async function HomePage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params
   setRequestLocale(locale)
@@ -17,8 +33,17 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
     .map((slug) => allCountries.find((c) => c.slug === slug))
     .filter(Boolean) as typeof allCountries
 
-  // Fetch hero images for featured countries in parallel
-  const images = await Promise.all(featured.map((c) => getCountryHeroImage(c.id)))
+  const month = new Date().getMonth() + 1
+  const trendingSlugs = TRENDING_BY_MONTH[month] ?? TRENDING_BY_MONTH[1]
+  const trending = trendingSlugs
+    .map((slug) => allCountries.find((c) => c.slug === slug))
+    .filter(Boolean) as typeof allCountries
+
+  // Fetch hero images in parallel
+  const [images, trendingImages] = await Promise.all([
+    Promise.all(featured.map((c) => getCountryHeroImage(c.id))),
+    Promise.all(trending.map((c) => getCountryHeroImage(c.id))),
+  ])
 
   return (
     <main className="flex flex-1 flex-col">
@@ -118,6 +143,84 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
                 </Link>
               )
             })}
+          </div>
+        </div>
+      </section>
+
+      {/* Trending this month */}
+      {trending.length > 0 && (
+        <section className="border-t border-[var(--border)] px-6 py-16">
+          <div className="mx-auto max-w-6xl">
+            <div className="mb-8 flex items-end justify-between">
+              <div>
+                <div className="mb-2 h-1 w-10 rounded-full bg-[var(--gold)]" />
+                <h2 className="text-2xl font-bold text-[var(--navy)]">
+                  {locale === 'ar' ? 'الأكثر شيوعًا هذا الشهر' : 'Trending this month'}
+                </h2>
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+              {trending.map((country, i) => {
+                const img = trendingImages[i]
+                return (
+                  <Link
+                    key={country.id}
+                    href={`/${country.slug}`}
+                    className="group relative overflow-hidden rounded-xl border border-[var(--border)] shadow-sm transition hover:shadow-lg"
+                  >
+                    {img ? (
+                      <div className="relative h-36 w-full sm:h-44">
+                        <Image
+                          src={img.url}
+                          alt={country.name}
+                          fill
+                          className="object-cover transition duration-500 group-hover:scale-105"
+                          sizes="(max-width: 640px) 50vw, 25vw"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
+                        <span className="absolute bottom-3 start-3 text-sm font-bold text-white drop-shadow">
+                          {country.name}
+                        </span>
+                      </div>
+                    ) : (
+                      <div className="flex h-36 items-center justify-center bg-[var(--navy-50)] p-4 sm:h-44">
+                        <span className="font-semibold text-[var(--navy)] group-hover:text-[var(--gold)] transition-colors text-sm">
+                          {country.name}
+                        </span>
+                      </div>
+                    )}
+                  </Link>
+                )
+              })}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Trip Planner CTA */}
+      <section className="px-6 pb-16">
+        <div className="mx-auto max-w-6xl">
+          <div className="rounded-2xl bg-[var(--navy)] px-8 py-10 flex flex-col sm:flex-row items-center justify-between gap-6">
+            <div>
+              <p className="text-[var(--gold)] text-sm font-medium mb-1">
+                {locale === 'ar' ? 'مدعوم بالذكاء الاصطناعي' : 'Powered by AI'}
+              </p>
+              <h3 className="text-2xl font-bold text-white mb-2">
+                {locale === 'ar' ? 'خطط لرحلتك في ثوانٍ' : 'Plan your perfect trip in seconds'}
+              </h3>
+              <p className="text-white/70 text-sm max-w-md">
+                {locale === 'ar'
+                  ? 'أخبرنا عن أسلوب سفرك وميزانيتك وسنبني لك خطة سفر مخصصة.'
+                  : 'Tell us your style, budget, and duration — we\'ll build a personalised itinerary.'}
+              </p>
+            </div>
+            <Link
+              href="/trip-planner"
+              className="shrink-0 inline-flex items-center gap-2 rounded-full bg-[var(--gold)] px-7 py-3 text-base font-semibold text-white shadow-lg transition hover:brightness-110"
+            >
+              {locale === 'ar' ? 'ابدأ التخطيط' : 'Start planning'}
+              <span aria-hidden>→</span>
+            </Link>
           </div>
         </div>
       </section>
