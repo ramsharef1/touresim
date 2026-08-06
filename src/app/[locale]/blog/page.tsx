@@ -1,150 +1,187 @@
 import { getTranslations, setRequestLocale } from 'next-intl/server'
+import { Link } from '@/i18n/navigation'
+import { db } from '@/db'
+import { schema } from '@/db'
+import { eq, desc, and } from 'drizzle-orm'
 import type { Locale } from '@/lib/locales'
 
-const ARTICLES = Array.from({ length: 12 }, (_, i) => ({
-  id: `article-${i + 1}`,
-  category: ['destinations', 'tips', 'stories', 'news'][i % 4],
-  readTime: 5 + (i % 6),
-  date: new Date(Date.now() - i * 7 * 24 * 60 * 60 * 1000).toLocaleDateString(),
-}))
+export const dynamic = 'force-dynamic'
+
+const CATEGORY_COLORS: Record<string, string> = {
+  'travel-tips': 'bg-blue-50 text-blue-700',
+  guide: 'bg-green-50 text-green-700',
+  visa: 'bg-purple-50 text-purple-700',
+  budget: 'bg-amber-50 text-amber-700',
+  food: 'bg-orange-50 text-orange-700',
+  adventure: 'bg-red-50 text-red-700',
+  culture: 'bg-rose-50 text-rose-700',
+}
+
+const CATEGORY_ICONS: Record<string, string> = {
+  'travel-tips': '💡',
+  guide: '🗺',
+  visa: '🛂',
+  budget: '💰',
+  food: '🍜',
+  adventure: '🏔',
+  culture: '🏛',
+}
 
 export default async function BlogPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ locale: string }>
+  searchParams: Promise<{ category?: string }>
 }) {
   const { locale } = await params
+  const { category } = await searchParams
   setRequestLocale(locale)
-  const t = await getTranslations('blog')
+
+  const posts = await db
+    .select()
+    .from(schema.blogPosts)
+    .where(
+      category
+        ? and(eq(schema.blogPosts.status, 'published'), eq(schema.blogPosts.category, category))
+        : eq(schema.blogPosts.status, 'published')
+    )
+    .orderBy(desc(schema.blogPosts.publishedAt))
+    .limit(30)
+    .catch(() => [] as typeof schema.blogPosts.$inferSelect[])
+
+  const featured = posts[0]
+  const rest = posts.slice(1)
+
+  const categories = ['travel-tips', 'guide', 'visa', 'budget', 'food', 'adventure', 'culture']
 
   return (
     <main className="flex flex-1 flex-col">
       {/* Hero */}
-      <section className="bg-gradient-to-br from-rose-600 to-rose-800 px-6 py-24 text-center sm:py-32">
+      <section className="bg-[var(--navy)] px-6 py-20 text-center">
         <div className="mx-auto max-w-2xl">
-          <h1 className="text-4xl font-bold text-white sm:text-5xl">
-            {t('title')}
-          </h1>
-          <p className="mt-4 text-lg text-rose-100">
-            {t('subtitle')}
+          <div className="mb-2 h-1 w-10 rounded-full bg-[var(--gold)] mx-auto" />
+          <h1 className="text-4xl font-bold text-white sm:text-5xl">Travel Journal</h1>
+          <p className="mt-4 text-lg text-white/60">
+            Guides, tips, and stories from around the world
           </p>
         </div>
       </section>
 
-      {/* Featured */}
-      <section className="px-6 py-16">
-        <div className="mx-auto max-w-6xl">
-          <div className="grid gap-6 lg:grid-cols-3">
-            {/* Featured Article */}
-            <div className="lg:col-span-2 rounded-lg overflow-hidden bg-white shadow-md">
-              <div className="h-64 bg-gradient-to-br from-rose-200 to-rose-300 flex items-center justify-center">
-                <span className="text-6xl">📸</span>
-              </div>
-              <div className="p-8">
-                <div className="flex gap-2">
-                  <span className="inline-block rounded-full bg-rose-100 px-3 py-1 text-sm font-medium text-rose-700">
-                    {t('category.destinations')}
-                  </span>
-                </div>
-                <h2 className="mt-4 text-3xl font-bold text-gray-900">
-                  {t('featured.title')}
-                </h2>
-                <p className="mt-4 text-lg text-gray-600">
-                  {t('featured.description')}
-                </p>
-                <div className="mt-6 flex items-center gap-4 text-sm text-gray-500">
-                  <span>{t('featured.date')}</span>
-                  <span>•</span>
-                  <span>{t('featured.readTime')} min read</span>
-                </div>
-                <button className="mt-6 text-rose-600 font-semibold hover:text-rose-700">
-                  {t('readMore')} →
-                </button>
-              </div>
-            </div>
+      {/* Category filters */}
+      <section className="border-b border-[var(--border)] bg-white px-6 py-4">
+        <div className="mx-auto max-w-6xl flex gap-2 overflow-x-auto pb-1">
+          <Link
+            href="/blog"
+            className={`shrink-0 rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${!category ? 'bg-[var(--navy)] text-white' : 'border border-[var(--border)] text-[var(--muted)] hover:bg-gray-50'}`}
+          >
+            All
+          </Link>
+          {categories.map((c) => (
+            <Link
+              key={c}
+              href={`/blog?category=${c}`}
+              className={`shrink-0 rounded-full px-4 py-1.5 text-sm font-medium transition-colors capitalize ${category === c ? 'bg-[var(--navy)] text-white' : 'border border-[var(--border)] text-[var(--muted)] hover:bg-gray-50'}`}
+            >
+              {CATEGORY_ICONS[c]} {c.replace('-', ' ')}
+            </Link>
+          ))}
+        </div>
+      </section>
 
-            {/* Trending */}
-            <div className="rounded-lg bg-white p-8 shadow-md">
-              <h3 className="text-xl font-bold text-gray-900">{t('trending.title')}</h3>
-              <div className="mt-6 space-y-4">
-                {[1, 2, 3].map((i) => (
-                  <div key={i} className="border-b border-gray-200 pb-4 last:border-0">
-                    <p className="text-sm font-medium text-gray-600">{t(`trending.item${i}`)}</p>
-                    <p className="mt-1 text-xs text-gray-500">2 days ago</p>
+      {posts.length === 0 ? (
+        <section className="px-6 py-24 text-center">
+          <p className="text-4xl mb-4">✍️</p>
+          <p className="text-[var(--muted)]">No articles published yet. Check back soon.</p>
+        </section>
+      ) : (
+        <>
+          {/* Featured post */}
+          {featured && !category && (
+            <section className="px-6 py-12">
+              <div className="mx-auto max-w-6xl">
+                <Link href={`/blog/${featured.slug}`} className="group grid lg:grid-cols-2 gap-8 rounded-2xl border border-[var(--border)] bg-white shadow-sm overflow-hidden hover:shadow-md transition-shadow">
+                  {featured.featuredImageUrl ? (
+                    <div className="relative h-64 lg:h-auto overflow-hidden">
+                      <img src={featured.featuredImageUrl} alt={featured.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                    </div>
+                  ) : (
+                    <div className="h-64 lg:h-auto bg-gradient-to-br from-[var(--navy)] to-[var(--navy)]/70 flex items-center justify-center text-7xl">
+                      {CATEGORY_ICONS[featured.category ?? ''] ?? '✈️'}
+                    </div>
+                  )}
+                  <div className="p-8 flex flex-col justify-center">
+                    <div className="flex items-center gap-2 mb-3">
+                      <span className={`rounded-full px-3 py-1 text-xs font-medium ${CATEGORY_COLORS[featured.category ?? ''] ?? 'bg-gray-100 text-gray-600'}`}>
+                        {featured.category?.replace('-', ' ')}
+                      </span>
+                      <span className="text-xs text-[var(--muted)]">Featured</span>
+                    </div>
+                    <h2 className="text-2xl font-bold text-[var(--navy)] mb-3 group-hover:text-[var(--gold)] transition-colors">{featured.title}</h2>
+                    {featured.excerpt && <p className="text-[var(--muted)] leading-relaxed mb-4">{featured.excerpt}</p>}
+                    <div className="flex items-center gap-3 text-xs text-[var(--muted)]">
+                      {featured.authorName && <span>{featured.authorName}</span>}
+                      {featured.authorName && <span>·</span>}
+                      {featured.publishedAt && <span>{new Date(featured.publishedAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}</span>}
+                      {featured.readTimeMinutes && <><span>·</span><span>{featured.readTimeMinutes} min read</span></>}
+                    </div>
                   </div>
-                ))}
+                </Link>
               </div>
-            </div>
-          </div>
-        </div>
-      </section>
+            </section>
+          )}
 
-      {/* All Articles */}
-      <section className="px-6 py-16 bg-gray-50">
-        <div className="mx-auto max-w-6xl">
-          <h2 className="text-2xl font-bold text-gray-900">{t('allArticles')}</h2>
-          <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {ARTICLES.map((article) => (
-              <article key={article.id} className="rounded-lg bg-white p-6 shadow-sm hover:shadow-md transition">
-                <div className="mb-4 h-40 rounded bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center">
-                  <span className="text-4xl">
-                    {article.category === 'destinations' && '✈️'}
-                    {article.category === 'tips' && '💡'}
-                    {article.category === 'stories' && '📖'}
-                    {article.category === 'news' && '📰'}
-                  </span>
+          {/* Grid */}
+          {rest.length > 0 && (
+            <section className="px-6 pb-16 bg-[var(--surface)]">
+              <div className="mx-auto max-w-6xl">
+                {!category && <div className="mb-2 h-1 w-10 rounded-full bg-[var(--gold)]" />}
+                {!category && <h2 className="text-xl font-bold text-[var(--navy)] mb-8 pt-12">More articles</h2>}
+                {category && <div className="pt-12" />}
+                <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                  {(category ? posts : rest).map((post) => (
+                    <Link
+                      key={post.id}
+                      href={`/blog/${post.slug}`}
+                      className="group rounded-xl border border-[var(--border)] bg-white overflow-hidden shadow-sm hover:shadow-md transition-shadow"
+                    >
+                      {post.featuredImageUrl ? (
+                        <div className="h-48 overflow-hidden">
+                          <img src={post.featuredImageUrl} alt={post.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                        </div>
+                      ) : (
+                        <div className="h-48 bg-gradient-to-br from-[var(--navy-50)] to-[var(--border)] flex items-center justify-center text-5xl">
+                          {CATEGORY_ICONS[post.category ?? ''] ?? '✈️'}
+                        </div>
+                      )}
+                      <div className="p-5">
+                        {post.category && (
+                          <span className={`inline-block rounded-full px-2.5 py-0.5 text-xs font-medium mb-2 ${CATEGORY_COLORS[post.category] ?? 'bg-gray-100 text-gray-600'}`}>
+                            {post.category.replace('-', ' ')}
+                          </span>
+                        )}
+                        <h3 className="font-bold text-[var(--navy)] group-hover:text-[var(--gold)] transition-colors leading-snug">{post.title}</h3>
+                        {post.excerpt && <p className="mt-2 text-sm text-[var(--muted)] line-clamp-2">{post.excerpt}</p>}
+                        <div className="mt-3 flex items-center gap-2 text-xs text-[var(--muted)]">
+                          {post.publishedAt && <span>{new Date(post.publishedAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}</span>}
+                          {post.readTimeMinutes && <><span>·</span><span>{post.readTimeMinutes} min</span></>}
+                        </div>
+                      </div>
+                    </Link>
+                  ))}
                 </div>
-                <div className="flex gap-2 mb-3">
-                  <span className="text-xs font-medium text-rose-700 bg-rose-100 rounded-full px-2 py-1">
-                    {t(`category.${article.category}`)}
-                  </span>
-                </div>
-                <h3 className="font-semibold text-gray-900">
-                  {t(`articles.${article.id}.title`)}
-                </h3>
-                <p className="mt-2 text-sm text-gray-600">
-                  {t(`articles.${article.id}.excerpt`)}
-                </p>
-                <div className="mt-4 flex items-center justify-between text-xs text-gray-500">
-                  <span>{article.date}</span>
-                  <span>{article.readTime} min</span>
-                </div>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Newsletter */}
-      <section className="px-6 py-16">
-        <div className="mx-auto max-w-2xl text-center">
-          <h2 className="text-3xl font-bold text-gray-900">{t('newsletter.title')}</h2>
-          <p className="mt-4 text-gray-600">{t('newsletter.subtitle')}</p>
-          <div className="mt-8 flex gap-3">
-            <input
-              type="email"
-              placeholder={t('newsletter.placeholder')}
-              className="flex-1 rounded-lg border border-gray-300 px-4 py-3 text-gray-900 focus:border-rose-500 focus:outline-none focus:ring-1 focus:ring-rose-500"
-            />
-            <button className="rounded-lg bg-rose-600 px-6 font-semibold text-white hover:bg-rose-700">
-              {t('newsletter.button')}
-            </button>
-          </div>
-        </div>
-      </section>
+              </div>
+            </section>
+          )}
+        </>
+      )}
     </main>
   )
 }
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ locale: string }>
-}) {
-  const { locale } = await params
-  const t = await getTranslations({ locale, namespace: 'blog' })
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
   return {
-    title: t('meta.title'),
-    description: t('meta.description'),
+    title: 'Travel Journal | Touresim',
+    description: 'Travel guides, tips, visa advice and stories from around the world.',
   }
 }

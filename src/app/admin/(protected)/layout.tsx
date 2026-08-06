@@ -20,6 +20,7 @@ const NAV = [
   { href: '/admin/deals', label: 'Deals', icon: '🏷' },
   { href: '/admin/reviews', label: 'Reviews', icon: '★' },
   { href: '/admin/blog', label: 'Blog / Articles', icon: '✍' },
+  { href: '/admin/analytics', label: 'Analytics', icon: '📊' },
   { href: '/admin/settings', label: 'Settings', icon: '⚙' },
 ]
 

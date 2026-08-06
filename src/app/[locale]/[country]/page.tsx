@@ -29,6 +29,8 @@ import { VisaBlock } from '@/components/VisaBlock'
 import WishlistButton from '@/components/WishlistButton'
 import BookingLinks from '@/components/BookingLinks'
 import { ShareButtons } from '@/components/ShareButtons'
+import { ReviewForm } from '@/components/ReviewForm'
+import { ReviewList } from '@/components/ReviewList'
 import type { Locale } from '@/lib/locales'
 
 type Props = { params: Promise<{ locale: string; country: string }> }
@@ -479,6 +481,13 @@ export default async function CountryPage({ params }: Props) {
             </div>
           </section>
         )}
+        {/* Reviews */}
+        <section className="mt-10">
+          <ReviewList destinationSlug={country.slug} destinationType="country" />
+          <div className="mt-6">
+            <ReviewForm destinationSlug={country.slug} destinationType="country" destinationName={country.name} />
+          </div>
+        </section>
       </main>
     </>
   )

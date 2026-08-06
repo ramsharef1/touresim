@@ -30,6 +30,13 @@ export async function generateMetadata({
   return {
     title: { default: t('siteName'), template: `%s · ${t('siteName')}` },
     description: t('description'),
+    manifest: '/manifest.json',
+    themeColor: '#0a1628',
+    appleWebApp: {
+      capable: true,
+      statusBarStyle: 'black-translucent',
+      title: 'Touresim',
+    },
   }
 }
 

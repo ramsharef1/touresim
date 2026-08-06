@@ -8,7 +8,10 @@ const isValidEmail = (email: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
-    const { destinationSlug, destinationType, rating, title, body: reviewBody, authorName, authorEmail } = body
+    const { destinationSlug, destinationType, rating, title, body: reviewBody, authorName, authorEmail, hp } = body
+
+    // Honeypot — bots fill hidden fields, humans don't
+    if (hp) return NextResponse.json({ success: true }, { status: 201 })
 
     if (!destinationSlug || !destinationType || !rating || !authorName || !authorEmail) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })

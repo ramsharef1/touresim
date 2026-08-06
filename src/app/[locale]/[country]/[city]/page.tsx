@@ -31,6 +31,8 @@ import { NATIONALITY_COOKIE } from '@/lib/nationality'
 import { VisaBlock } from '@/components/VisaBlock'
 import WishlistButton from '@/components/WishlistButton'
 import BookingLinks from '@/components/BookingLinks'
+import { ReviewForm } from '@/components/ReviewForm'
+import { ReviewList } from '@/components/ReviewList'
 import { ShareButtons } from '@/components/ShareButtons'
 import type { Locale } from '@/lib/locales'
 
@@ -742,6 +744,14 @@ async function CityPage({
         {/* Booking affiliate links */}
         <section className="mt-10">
           <BookingLinks destinationName={city.name} />
+        </section>
+
+        {/* Reviews */}
+        <section className="mt-10">
+          <ReviewList destinationSlug={city.slug} destinationType="city" />
+          <div className="mt-6">
+            <ReviewForm destinationSlug={city.slug} destinationType="city" destinationName={city.name} />
+          </div>
         </section>
       </main>
     </>

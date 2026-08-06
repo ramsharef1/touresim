@@ -1,81 +1,175 @@
-export const metadata = {
-  title: 'Travel Deals',
-  description: 'Best travel deals from top partners including flights, hotels, tours, and activities',
+import { setRequestLocale } from 'next-intl/server'
+import { db } from '@/db'
+import { schema } from '@/db'
+import { desc, eq, and, gte } from 'drizzle-orm'
+import { Link } from '@/i18n/navigation'
+
+export const dynamic = 'force-dynamic'
+
+const TYPE_ICONS: Record<string, string> = {
+  flight: '✈️',
+  hotel: '🏨',
+  tour: '🗺',
+  activity: '🎯',
+  experience: '🌟',
 }
 
-export default function DealsPage() {
+const PARTNER_COLORS: Record<string, string> = {
+  'booking.com': 'bg-blue-600',
+  airbnb: 'bg-rose-500',
+  getyourguide: 'bg-green-600',
+  skyscanner: 'bg-cyan-600',
+  viator: 'bg-purple-600',
+  klook: 'bg-red-500',
+  expedia: 'bg-yellow-500',
+}
+
+const DEAL_TYPES = ['flight', 'hotel', 'tour', 'activity', 'experience'] as const
+
+export default async function DealsPage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ locale: string }>
+  searchParams: Promise<{ type?: string }>
+}) {
+  const { locale } = await params
+  const { type } = await searchParams
+  setRequestLocale(locale)
+
+  const now = new Date()
+
+  const deals = await db
+    .select()
+    .from(schema.deals)
+    .where(
+      type
+        ? and(gte(schema.deals.expiresAt, now), eq(schema.deals.type, type as typeof DEAL_TYPES[number]))
+        : gte(schema.deals.expiresAt, now)
+    )
+    .orderBy(desc(schema.deals.createdAt))
+    .limit(48)
+    .catch(() => [] as typeof schema.deals.$inferSelect[])
+
   return (
-    <main className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
+    <main className="flex flex-1 flex-col">
       {/* Hero */}
-      <div className="bg-gradient-to-r from-blue-600 to-blue-700 text-white py-12">
-        <div className="mx-auto max-w-6xl px-4">
-          <h1 className="text-4xl font-bold mb-2">Travel Deals</h1>
-          <p className="text-lg text-blue-100">Best travel deals updated daily</p>
+      <section className="bg-[var(--navy)] px-6 py-20 text-center">
+        <div className="mx-auto max-w-2xl">
+          <div className="mb-2 h-1 w-10 rounded-full bg-[var(--gold)] mx-auto" />
+          <h1 className="text-4xl font-bold text-white sm:text-5xl">Travel Deals</h1>
+          <p className="mt-4 text-lg text-white/60">
+            Curated deals on flights, hotels, tours, and experiences
+          </p>
         </div>
-      </div>
+      </section>
 
-      {/* Type Filters */}
-      <div className="mx-auto max-w-6xl px-4 py-12">
-        <div className="flex gap-2 mb-8 overflow-x-auto pb-2">
-          <a href="/deals" className="whitespace-nowrap px-4 py-2 rounded-full font-medium bg-blue-600 text-white shadow-md">All</a>
-          <a href="/deals?type=flight" className="whitespace-nowrap px-4 py-2 rounded-full font-medium bg-white text-gray-700 hover:bg-gray-100">Flights</a>
-          <a href="/deals?type=hotel" className="whitespace-nowrap px-4 py-2 rounded-full font-medium bg-white text-gray-700 hover:bg-gray-100">Hotels</a>
-          <a href="/deals?type=tour" className="whitespace-nowrap px-4 py-2 rounded-full font-medium bg-white text-gray-700 hover:bg-gray-100">Tours</a>
-          <a href="/deals?type=activity" className="whitespace-nowrap px-4 py-2 rounded-full font-medium bg-white text-gray-700 hover:bg-gray-100">Activities</a>
-          <a href="/deals?type=experience" className="whitespace-nowrap px-4 py-2 rounded-full font-medium bg-white text-gray-700 hover:bg-gray-100">Experiences</a>
+      {/* Type filters */}
+      <section className="border-b border-[var(--border)] bg-white px-6 py-4">
+        <div className="mx-auto max-w-6xl flex gap-2 overflow-x-auto pb-1">
+          <Link
+            href="/deals"
+            className={`shrink-0 rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${!type ? 'bg-[var(--navy)] text-white' : 'border border-[var(--border)] text-[var(--muted)] hover:bg-gray-50'}`}
+          >
+            All
+          </Link>
+          {DEAL_TYPES.map((t) => (
+            <Link
+              key={t}
+              href={`/deals?type=${t}`}
+              className={`shrink-0 rounded-full px-4 py-1.5 text-sm font-medium transition-colors capitalize ${type === t ? 'bg-[var(--navy)] text-white' : 'border border-[var(--border)] text-[var(--muted)] hover:bg-gray-50'}`}
+            >
+              {TYPE_ICONS[t]} {t}s
+            </Link>
+          ))}
         </div>
+      </section>
 
-        {/* Deals Container (Client-side loading) */}
-        <div id="deals-container" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <div className="col-span-full text-center py-12 text-gray-600">Loading deals...</div>
-        </div>
-      </div>
+      {/* Deals grid */}
+      <section className="px-6 py-12 bg-[var(--surface)]">
+        <div className="mx-auto max-w-6xl">
+          {deals.length === 0 ? (
+            <div className="py-24 text-center">
+              <p className="text-5xl mb-4">🏷</p>
+              <p className="text-[var(--muted)] text-lg">No deals available right now.</p>
+              <p className="text-[var(--muted)] text-sm mt-2">Check back soon — new deals are added regularly.</p>
+              <Link href="/destinations" className="mt-6 inline-flex items-center gap-2 rounded-full bg-[var(--gold)] px-6 py-2.5 text-sm font-semibold text-white hover:brightness-110 transition">
+                Browse destinations
+              </Link>
+            </div>
+          ) : (
+            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              {deals.map((deal) => {
+                const daysLeft = Math.ceil((new Date(deal.expiresAt).getTime() - now.getTime()) / (1000 * 60 * 60 * 24))
+                return (
+                  <div key={deal.id} className="group rounded-xl border border-[var(--border)] bg-white shadow-sm overflow-hidden hover:shadow-md transition-shadow flex flex-col">
+                    {/* Image or gradient */}
+                    {deal.imageUrl ? (
+                      <div className="relative h-44 overflow-hidden">
+                        <img src={deal.imageUrl} alt={deal.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+                        {deal.discount && (
+                          <span className="absolute top-3 right-3 rounded-full bg-[var(--gold)] px-2.5 py-1 text-xs font-bold text-white">
+                            −{deal.discount}%
+                          </span>
+                        )}
+                      </div>
+                    ) : (
+                      <div className={`h-44 flex items-center justify-center text-6xl ${PARTNER_COLORS[deal.partner] ?? 'bg-[var(--navy)]'} relative`}>
+                        {TYPE_ICONS[deal.type] ?? '🌍'}
+                        {deal.discount && (
+                          <span className="absolute top-3 right-3 rounded-full bg-[var(--gold)] px-2.5 py-1 text-xs font-bold text-white">
+                            −{deal.discount}%
+                          </span>
+                        )}
+                      </div>
+                    )}
 
-      {/* Client Script to Load Deals */}
-      <script dangerouslySetInnerHTML={{__html: `
-        (async () => {
-          try {
-            const params = new URLSearchParams(window.location.search);
-            const type = params.get('type');
-            const url = '/api/deals' + (type ? '?type=' + type : '');
+                    <div className="p-5 flex flex-col flex-1">
+                      {/* Partner + type */}
+                      <div className="flex items-center gap-2 mb-2">
+                        <span className="text-xs font-medium text-[var(--muted)] capitalize">{deal.partner}</span>
+                        <span className="text-[var(--muted)]">·</span>
+                        <span className="text-xs font-medium text-[var(--muted)] capitalize">{deal.type}</span>
+                        {daysLeft <= 3 && (
+                          <span className="ml-auto text-xs font-medium text-red-600 bg-red-50 rounded-full px-2 py-0.5">
+                            {daysLeft}d left
+                          </span>
+                        )}
+                      </div>
 
-            const res = await fetch(url);
-            const data = await res.json();
+                      <h3 className="font-bold text-[var(--navy)] leading-snug mb-1">{deal.title}</h3>
+                      {deal.description && <p className="text-xs text-[var(--muted)] line-clamp-2 mb-3">{deal.description}</p>}
 
-            const container = document.getElementById('deals-container');
-            if (!data.data || data.data.length === 0) {
-              container.innerHTML = '<div class="col-span-full text-center py-12 text-gray-500">No deals available</div>';
-              return;
-            }
+                      {/* Price */}
+                      <div className="flex items-baseline gap-2 mt-auto mb-4">
+                        <span className="text-2xl font-bold text-[var(--navy)]">${Number(deal.dealPrice).toFixed(0)}</span>
+                        {deal.originalPrice && (
+                          <span className="text-sm text-[var(--muted)] line-through">${Number(deal.originalPrice).toFixed(0)}</span>
+                        )}
+                      </div>
 
-            container.innerHTML = data.data.map(deal => \`
-              <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
-                <div class="bg-gradient-to-r from-blue-500 to-blue-600 p-4 text-white">
-                  <h3 class="font-semibold text-lg">\${deal.title}</h3>
-                  <p class="text-sm text-blue-100">\${deal.partner}</p>
-                </div>
-                <div class="p-4">
-                  <p class="text-gray-600 text-sm mb-2">\${deal.description}</p>
-                  <div class="flex justify-between items-center mb-4">
-                    <div>
-                      <span class="text-2xl font-bold text-blue-600">$\${deal.dealPrice}</span>
-                      <span class="text-gray-500 line-through text-sm ml-2">$\${deal.originalPrice}</span>
+                      <a
+                        href={deal.affiliateUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="block w-full rounded-lg bg-[var(--navy)] py-2.5 text-center text-sm font-semibold text-white hover:bg-[var(--navy)]/80 transition-colors"
+                      >
+                        View deal →
+                      </a>
                     </div>
-                    <span class="bg-red-100 text-red-700 px-3 py-1 rounded-full text-sm font-semibold">-\${deal.discount}%</span>
                   </div>
-                  <p class="text-xs text-gray-500 mb-3">Expires: \${new Date(deal.expiresAt).toLocaleDateString()}</p>
-                  <a href="\${deal.affiliateUrl}" target="_blank" rel="noopener noreferrer" class="block w-full bg-blue-600 text-white py-2 rounded-lg text-center font-medium hover:bg-blue-700">
-                    View Deal
-                  </a>
-                </div>
-              </div>
-            \`).join('');
-          } catch (error) {
-            console.error('Error loading deals:', error);
-            document.getElementById('deals-container').innerHTML = '<div class="col-span-full text-center py-12 text-red-600">Error loading deals</div>';
-          }
-        })();
-      `}} />
+                )
+              })}
+            </div>
+          )}
+        </div>
+      </section>
     </main>
   )
+}
+
+export const metadata = {
+  title: 'Travel Deals | Touresim',
+  description: 'Best travel deals on flights, hotels, tours and experiences.',
 }
